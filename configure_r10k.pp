@@ -1,9 +1,10 @@
 # add ssh rsa key to known_hosts
 sshkey { $::fqdn:
-  ensure => present,
-  key    => $::sshrsakey,
-  target => '/root/.ssh/known_hosts',
-  type   => 'ssh-rsa',
+  ensure       => present,
+  key          => $::sshrsakey,
+  host_aliases => $::ipaddress,
+  target       => '/root/.ssh/known_hosts',
+  type         => 'ssh-rsa',
 }
 
 # create directory for r10k config file
