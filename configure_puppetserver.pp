@@ -12,6 +12,15 @@ ini_setting { 'environment_timeout':
   value   => 'unlimited',
 }
 
+# add puppet master cert to admin api whitelist
+hocon_setting { 'client-whitelist':
+  ensure  => present,
+  path    => '/etc/puppetlabs/puppetserver/conf.d/puppetserver.conf',
+  setting => 'puppet-admin.client-whitelist',
+  value   => [$::fqdn],
+  type    => 'array',
+}
+
 # start and enable service
 service { 'puppetserver':
   ensure     => running,
