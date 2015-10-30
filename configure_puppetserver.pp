@@ -12,6 +12,15 @@ ini_setting { 'environment_timeout':
   value   => 'unlimited',
 }
 
+# fix pidfile setting in puppet.conf
+ini_setting { 'pidfile':
+  ensure  => present,
+  path    => $::settings::config,
+  section => 'master',
+  setting => 'pidfile',
+  value   => '/var/run/puppetlabs/puppetserver/puppetserver',
+}
+
 # add puppet master cert to admin api whitelist
 hocon_setting { 'client-whitelist':
   ensure  => present,
