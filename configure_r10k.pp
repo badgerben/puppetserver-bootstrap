@@ -17,7 +17,8 @@ file { '/etc/puppetlabs/r10k':
 
 # install r10k
 class { 'r10k':
-  remote => "gitolite3@${::fqdn}:puppet-control.git",
+  remote   => "gitolite3@${::fqdn}:puppet-control.git",
+  cachedir => '/opt/puppetlabs/puppet/cache/r10k',
 }
 
 # r10k class depends on r10k config directory
