@@ -16,6 +16,12 @@ file { '/usr/local/sbin/delete_environment_cache.sh':
   content => inline_epp($delete_environment_cache_template),
 }
 
+# install puppet-lint gem
+package { 'puppet-lint':
+  ensure   => installed,
+  provider => 'puppet_gem',
+}
+
 # install puppetserver package
 package { 'puppetserver':
   ensure => installed,
