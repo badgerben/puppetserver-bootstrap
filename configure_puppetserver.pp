@@ -29,13 +29,13 @@ file { '/usr/local/sbin/delete_environment_cache.sh':
 
 # install puppet-lint gem
 package { 'puppet-lint':
-  ensure   => installed,
+  ensure   => present,
   provider => 'puppet_gem',
 }
 
 # install puppetserver package
 package { 'puppetserver':
-  ensure => installed,
+  ensure => present,
 }
 
 # default params for ini_setting
