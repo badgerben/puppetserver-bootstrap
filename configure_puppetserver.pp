@@ -72,5 +72,3 @@ Package['puppetserver'] -> Service['puppetserver']
 Ini_setting['environment_timeout'] ~> Service['puppetserver']
 Ini_setting['pidfile'] ~> Service['puppetserver']
 
-# puppetserver.conf settings notify service
-Hocon_setting['client-whitelist'] ~> Service['puppetserver']
