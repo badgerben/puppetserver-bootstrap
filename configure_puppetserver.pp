@@ -1,10 +1,21 @@
 # epp template for wrapper script
 $delete_environment_cache_template = @("END"/L)
 	#!/bin/bash
-	# Wrapper script to delete Puppet Server environment cache using curl
+	#
+	# This file is managed by Puppet
+	#
+	# Wrapper script to delete Puppetserver environment cache using curl
+	#
+	
+	BRANCH=""
+	
+	if [ ! -z "$1" ]; then
+	  BRANCH="?environment=$1"
+	fi
+	
 	/usr/bin/curl -s --cert $::settings::hostcert --key $::settings::hostprivkey \
 	--cacert $::settings::cacert -X DELETE \
-	https://${::fqdn}:8140/puppet-admin-api/v1/environment-cache
+	https://${::fqdn}:8140/puppet-admin-api/v1/environment-cache$BRANCH
 	| END
 
 # create wrapper script for deleting environment cache
