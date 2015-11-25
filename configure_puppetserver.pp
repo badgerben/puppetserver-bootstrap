@@ -9,8 +9,8 @@ $delete_environment_cache_template = @("END"/$)
 	
 	BRANCH=""
 	
-	if [ ! -z "$1" ]; then
-	  BRANCH="?environment=$1"
+	if [ ! -z "\$1" ]; then
+	  BRANCH="?environment=\$1"
 	fi
 	
 	/usr/bin/curl -s --cert $::settings::hostcert --key $::settings::hostprivkey \
