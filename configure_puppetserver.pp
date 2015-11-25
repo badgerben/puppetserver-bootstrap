@@ -23,7 +23,7 @@ file { '/usr/local/sbin/delete_environment_cache.sh':
   ensure  => file,
   owner   => 'root',
   group   => 'root',
-  mode    => '0755',
+  mode    => '0750',
   content => inline_epp($delete_environment_cache_template),
 }
 
