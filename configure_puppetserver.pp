@@ -57,6 +57,15 @@ ini_setting { 'pidfile':
   value   => '/var/run/puppetlabs/puppetserver/puppetserver',
 }
 
+# disable use of legacy auth.conf
+hocon_setting { 'use-legacy-auth-conf':
+  ensure  => present,
+  path    => '/etc/puppetlabs/puppetserver/conf.d/puppetserver.conf',
+  setting => 'jruby-puppet.use-legacy-auth-conf',
+  value   => false,
+  type    => 'boolean',
+}
+
 # start and enable service
 service { 'puppetserver':
   ensure     => running,
