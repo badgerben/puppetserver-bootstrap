@@ -27,20 +27,21 @@ package { 'puppetserver':
   ensure => installed,
 }
 
-# set environment_timeout in puppet.conf
-ini_setting { 'environment_timeout':
+# default params for ini_setting
+Ini_setting {
   ensure  => present,
   path    => $::settings::config,
   section => 'master',
+}
+
+# set environment_timeout in puppet.conf
+ini_setting { 'environment_timeout':
   setting => 'environment_timeout',
   value   => 'unlimited',
 }
 
 # fix pidfile setting in puppet.conf
 ini_setting { 'pidfile':
-  ensure  => present,
-  path    => $::settings::config,
-  section => 'master',
   setting => 'pidfile',
   value   => '/var/run/puppetlabs/puppetserver/puppetserver',
 }
