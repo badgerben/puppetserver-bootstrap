@@ -1,5 +1,5 @@
 # epp template for wrapper script
-$delete_environment_cache_template = @("END"/$)
+$delete_environment_cache_template = @("END"/$L)
 	#!/bin/bash
 	#
 	# This file is managed by Puppet
