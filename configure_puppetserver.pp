@@ -6,13 +6,10 @@ $delete_environment_cache_template = @("END"/$L)
 	#
 	# Wrapper script to delete Puppetserver environment cache using curl
 	#
-	
 	BRANCH=""
-	
 	if [ ! -z "\$1" ]; then
 	  BRANCH="?environment=\$1"
 	fi
-	
 	/usr/bin/curl -s --cert $::settings::hostcert --key $::settings::hostprivkey \
 	--cacert $::settings::cacert -X DELETE \
 	https://${::fqdn}:8140/puppet-admin-api/v1/environment-cache\$BRANCH
@@ -43,6 +40,8 @@ Ini_setting {
   ensure  => present,
   path    => $::settings::config,
   section => 'master',
+  notify  => Service['puppetserver'],
+  require => Package['puppetserver'],
 }
 
 # set environment_timeout in puppet.conf
@@ -57,10 +56,16 @@ ini_setting { 'pidfile':
   value   => '/var/run/puppetlabs/puppetserver/puppetserver',
 }
 
-# disable use of legacy auth.conf
-hocon_setting { 'use-legacy-auth-conf':
+# default params for hocon_setting
+Hocon_setting {
   ensure  => present,
   path    => '/etc/puppetlabs/puppetserver/conf.d/puppetserver.conf',
+  notify  => Service['puppetserver'],
+  require => Package['puppetserver'],
+}
+
+# disable use of legacy auth.conf
+hocon_setting { 'use-legacy-auth-conf':
   setting => 'jruby-puppet.use-legacy-auth-conf',
   value   => false,
   type    => 'boolean',
@@ -72,14 +77,5 @@ service { 'puppetserver':
   enable     => true,
   hasstatus  => true,
   hasrestart => true,
+  require    => Package['puppetserver'],
 }
-
-# service depends on package
-Package['puppetserver'] -> Service['puppetserver']
-
-# puppet.conf settings notify service
-Ini_setting['environment_timeout'] ~> Service['puppetserver']
-Ini_setting['pidfile'] ~> Service['puppetserver']
-
-# puppetserver.conf settings notify service
-Hocon_setting['use-legacy-auth-conf'] ~> Service['puppetserver']
