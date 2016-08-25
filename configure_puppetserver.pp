@@ -6,10 +6,13 @@ $delete_environment_cache_template = @("END"/$L)
 	#
 	# Wrapper script to delete Puppetserver environment cache using curl
 	#
+	
 	BRANCH=""
+	
 	if [ ! -z "\$1" ]; then
 	  BRANCH="?environment=\$1"
 	fi
+	
 	/usr/bin/curl -s --cert $::settings::hostcert --key $::settings::hostprivkey \
 	--cacert $::settings::cacert -X DELETE \
 	https://${::fqdn}:8140/puppet-admin-api/v1/environment-cache\$BRANCH
