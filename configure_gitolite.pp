@@ -12,3 +12,12 @@ class { 'gitolite':
   repo_specific_hooks => true,
   require             => Class['epel'],
 }
+
+# create sudo config for gitolite3 user
+file { '/etc/sudoers.d/10_gitolite3':
+  ensure  => present,
+  owner   => 'root',
+  group   => 'root',
+  mode    => '0440',
+  content => "Defaults:gitolite3 !requiretty\ngitolite3 ALL=(root) NOPASSWD: /usr/bin/r10k, /usr/local/sbin/delete_environment_cache.sh\n",
+}
