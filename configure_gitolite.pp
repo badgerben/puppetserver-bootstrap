@@ -1,5 +1,7 @@
-# install epel (stahnma-epel module)
-class { 'epel': }
+# install epel (puppet-epel module)
+class { 'epel':
+  epel_enabled => '0', # managed via foreman
+}
 
 # install gitolite (echoes-gitolite module)
 class { 'gitolite':

@@ -27,51 +27,20 @@ file { '/usr/local/sbin/delete_environment_cache.sh':
   content => inline_epp($delete_environment_cache_template),
 }
 
-# install puppet-lint gem
-package { 'puppet-lint':
-  ensure   => present,
-  provider => 'puppet_gem',
-}
-
 # install puppetserver package
 package { 'puppetserver':
   ensure => present,
 }
 
-# default params for ini_setting
-Ini_setting {
+# set environment_timeout in puppet.conf
+ini_setting { 'environment_timeout':
   ensure  => present,
   path    => $::settings::config,
   section => 'master',
-  notify  => Service['puppetserver'],
-  require => Package['puppetserver'],
-}
-
-# set environment_timeout in puppet.conf
-ini_setting { 'environment_timeout':
   setting => 'environment_timeout',
   value   => 'unlimited',
-}
-
-# fix pidfile setting in puppet.conf
-ini_setting { 'pidfile':
-  setting => 'pidfile',
-  value   => '/var/run/puppetlabs/puppetserver/puppetserver',
-}
-
-# default params for hocon_setting
-Hocon_setting {
-  ensure  => present,
-  path    => '/etc/puppetlabs/puppetserver/conf.d/puppetserver.conf',
   notify  => Service['puppetserver'],
   require => Package['puppetserver'],
-}
-
-# disable use of legacy auth.conf
-hocon_setting { 'use-legacy-auth-conf':
-  setting => 'jruby-puppet.use-legacy-auth-conf',
-  value   => false,
-  type    => 'boolean',
 }
 
 # start and enable service
