@@ -32,6 +32,18 @@ package { 'puppetserver':
   ensure => present,
 }
 
+# allow puppetserver to delete environment cache
+puppet_authorization::rule { 'environment-cache':
+  match_request_path   => '/puppet-admin-api/v1/environment-cache',
+  match_request_type   => 'path',
+  match_request_method => 'delete',
+  allow                => $::facts['networking']['fqdn'],
+  sort_order           => 200,
+  path                 => '/etc/puppetlabs/puppetserver/conf.d/auth.conf',
+  require              => Package['puppetserver'],
+  notify               => Service['puppetserver'],
+}
+
 # set environment_timeout in puppet.conf
 ini_setting { 'environment_timeout':
   ensure  => present,
